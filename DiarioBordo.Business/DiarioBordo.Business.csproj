@@ -1,0 +1,12 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp1.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DiarioBordo.Data\DiarioBordo.Data.csproj" />
+    <ProjectReference Include="..\DiarioBordo.Domain\DiarioBordo.Domain.csproj" />
+  </ItemGroup>
+
+</Project>

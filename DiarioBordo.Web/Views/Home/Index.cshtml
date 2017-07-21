@@ -1,0 +1,93 @@
+﻿@using DiarioBordo.Domain
+
+<div class="container" style="margin-top: 80px">
+    @if (TempData["Erro"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Fechar"><span aria-hidden="true">&times;</span></button>
+            <strong>ERRO!</strong> @TempData["Erro"]
+        </div>
+    }
+    @if (TempData["Sucesso"] != null)
+    {
+        <div class="alert alert-success alert-dismissible" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Fechar"><span aria-hidden="true">&times;</span></button>
+            @TempData["Sucesso"]
+        </div>
+    }
+    <div class="row">
+        <h4 style="margin-bottom: 20px;">@ViewBag.Titulo</h4>
+    @if (ViewBag.Page.Items != null && ViewBag.Page.Items.Count > 0)
+    {
+        <div class="timeline-centered">
+                @foreach (var registro in ViewBag.Page.Items)
+                {
+                    <article class="timeline-entry">
+                        <div class="timeline-entry-inner">
+                            @if (registro.Criticidade == Criticidade.Baixa)
+                            {
+                            <div class="timeline-icon bg-success">
+                                <i class="entypo-feather"></i>
+                            </div>
+                            }
+                            else if (registro.Criticidade == Criticidade.Media)
+                            {
+                                <div class="timeline-icon bg-warning">
+                                    <i class="entypo-camera"></i>
+                                </div>
+                            }
+                            else if (registro.Criticidade == Criticidade.Alta)
+                            {
+                                <div class="timeline-icon bg-secondary">
+                                    <i class="entypo-suitcase"></i>
+                                </div>
+                            }
+                            <div class="timeline-label">
+                                <a href="/registros/excluir/@registro.Id" data-toggle="tooltip" title="Excluir" onclick="return confirm('Tem certeza que deseja excluir este registro?');" class="text-danger pull-right"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></a>
+                                <a href="/registros/editar/@registro.Id" data-toggle="tooltip" title="Editar" class="text-warning pull-right" style="margin-right:10px"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></a>
+                                <h2>@registro.Titulo <small style="margin-left:10px"><span class="glyphicon glyphicon-time" aria-hidden="true"></span> <em>@registro.CriadoEm.ToString("dd/MM/yyyy HH:mm:ss")</em></small></h2>
+                                <p>
+                                    @registro.Descricao
+                                    <div>
+                                        <a href="/registros/tag/@registro.TagId"><span class="label label-default">@registro.Tag.Nome</span></a>
+                                    </div>
+                                </p>
+                            </div>
+                        </div>
+                    </article>
+                }
+        </div>
+        @if (ViewBag.Page.Count > ViewBag.Page.PageSize)
+        {
+            <nav aria-label="Paginação">
+                <ul class="pagination">
+                    @if (ViewBag.Page.PageNumber > 1)
+                    {
+                        <li>
+                            <a href="@ViewBag.UrlBase?pageNumber=@(ViewBag.Page.PageNumber - 1)" aria-label="Anterior">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+                    }
+                    @for (int i = 1; i <= ViewBag.Page.PageCount; i++)
+                    {
+                        <li><a href="@ViewBag.UrlBase?pageNumber=@i">@i</a></li>
+                    }
+                    @if (ViewBag.Page.PageNumber < ViewBag.Page.PageCount)
+                    {
+                        <li>
+                            <a href="@ViewBag.UrlBase?pageNumber=@(ViewBag.Page.PageNumber + 1)" aria-label="Próximo">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                    }
+                </ul>
+            </nav>
+        }
+    }
+    else
+    {
+        <div class="alert alert-warning">Não existem registros para esta data.</div>
+    }
+    </div>
+</div>

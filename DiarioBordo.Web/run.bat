@@ -1,0 +1,1 @@
+dotnet DiarioBordo.Web.dll
